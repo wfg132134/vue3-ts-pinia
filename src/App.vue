@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <!-- <router-link to="/main">主要</router-link>
-    <router-link to="/login">登录</router-link> -->
+  <div class="app">
     <router-view></router-view>
   </div>
 </template>
@@ -11,5 +9,9 @@
 </script>
 
 <style>
-
+.app {
+  height: 100vh;
+  width: 100vw;
+  background: rgb(187, 237, 237);
+}
 </style>

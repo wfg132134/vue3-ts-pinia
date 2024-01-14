@@ -10,18 +10,11 @@
 <script setup lang="ts">
 import useCounterStore from '@/store/counter'
 import { onMounted } from 'vue';
-import  { getData }  from '@/api';
 const counterStore = useCounterStore()
 
 function incrementCounter() {
   counterStore.increment(200)
 }
-
-onMounted(() => {
-  getData().then(res => {
-    console.log(res);
-  })
-})
 
 
 </script>
