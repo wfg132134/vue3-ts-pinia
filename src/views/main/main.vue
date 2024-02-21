@@ -1,19 +1,21 @@
 <template>
   <div>
     <h2>main {{ counterStore.count }}</h2>
-    <button @click="incrementCounter">修改count</button>
-    <button @click="incrementCounter">修改count</button>
-    <button @click="incrementCounter">修改count</button>
+    <button @click="handleExitClick">退出登录</button>
   </div>
 </template>
 
 <script setup lang="ts">
+import { LOGIN_TOKEN } from '@/global/constants';
+import router from '@/router';
 import useCounterStore from '@/store/counter'
-import { onMounted } from 'vue';
 const counterStore = useCounterStore()
 
-function incrementCounter() {
-  counterStore.increment(200)
+function handleExitClick() {
+  // 1.删除token
+  localStorage.removeItem(LOGIN_TOKEN)
+  // 2.跳转到登录页
+  router.push('./login')
 }
 
 
