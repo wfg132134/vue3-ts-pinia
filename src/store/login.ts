@@ -25,7 +25,7 @@ const useLoginStore = defineStore('login', {
 
       // 页面跳转
       router.push('/main')
-    }
+    },
   }
 })
 export default useLoginStore

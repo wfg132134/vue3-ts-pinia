@@ -9,10 +9,9 @@
           <el-form-item label="密码：" prop="password">
             <el-input v-model="account.password" type="password" :show-password="true" />
           </el-form-item>
-
           <el-row :gutter="24">
-            <el-col :span="6" :offset="6">
-              <el-checkbox class="checkBox" label="同意用户使用准则" name="type" :offset="2" v-model="account.isRead"/>
+            <el-col :span="6" :offset="5">
+              <el-checkbox class="checkBox" label="记住密码" name="type" v-model="isSavePassword" />
             </el-col>
           </el-row>
           <el-row :gutter="24" class="loginBtn">
@@ -51,24 +50,28 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus';
 import useLoginStore from "@/store/login";
 import type  { IAccount } from '@/types';
 
 
 const activeName = ref('login');
+const USER_NAME ='cmsusername';
+const PASSWORD= 'cmspassword';
+const IS_REM_PWD = 'isRemPwd'
+
 
 const account = reactive<IAccount>({
-  username: '',
-  password: '',
-  isRead: true
+  username: localStorage.getItem(USER_NAME) ?? '',
+  password: localStorage.getItem(PASSWORD) ?? '',
+  isSavePassword: true
 })
 
 interface RuleForm {
   username: string
   password: string
-  isRead: boolean
+  isSavePassword: boolean
 }
 
 const rules = reactive<FormRules<RuleForm>>({
@@ -80,17 +83,36 @@ const rules = reactive<FormRules<RuleForm>>({
   ],
 })
 
-
 // 登录模块
 const loginFormRef = ref<FormInstance>()
 const loginStore = useLoginStore();
+const isSavePassword = ref(Boolean(localStorage.getItem(IS_REM_PWD))?? false);
+watch(isSavePassword, (newval) =>{
+  if(newval) {
+    localStorage.setItem(IS_REM_PWD,String(newval));
+  } else {
+    localStorage.removeItem(IS_REM_PWD);
+  }
+})
 
 const submit = () => {
   loginFormRef.value?.validate(async (valid) => {
     if (valid) {
+      // 获取用户输入的账号和密码
       const username = account.username.trim();
       const password = account.password.trim();
+      // 发送网络请求
       loginStore.loginAccountAction({ username, password })
+      // 是否是记住密码
+      if (isSavePassword.value) {
+        localStorage.setItem(USER_NAME, username)
+        localStorage.setItem(PASSWORD, password)
+      } else {
+        localStorage.removeItem(USER_NAME)
+        localStorage.removeItem(PASSWORD)
+      }
+
+      ElMessage.success('登录成功');
     } else {
       ElMessage.error('check your input')
       return false
