@@ -38,7 +38,7 @@ class HYRequest {
     )
   }
 
-  public httpRequestGet(url: string, params:AxiosRequestConfig) {
+  public httpRequestGet(url: string, params?:AxiosRequestConfig) {
     url = HYRequest.config.baseURL + url
     return HYRequest.axiosInstance.get(url, params).then((res) => res.data).catch()
   }
