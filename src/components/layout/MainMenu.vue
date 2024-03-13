@@ -13,7 +13,7 @@
                 <span>{{ item.name }}</span>
               </template>
               <template v-for="itemSub in item.children">
-                <el-menu-item :index="itemSub.id + ''">{{ itemSub.name }}</el-menu-item>
+                <el-menu-item :index="itemSub.id + ''" @click="handleItemChange(itemSub)">{{ itemSub.name }}</el-menu-item>
               </template>
             </el-sub-menu>
           </div>
@@ -31,9 +31,15 @@ import {
   Setting,
 } from '@element-plus/icons-vue'
 
+import router from '@/router';
+
 import useLoginStore from '@/store/login'
 const loginStore = useLoginStore()
 const userMenu = loginStore.userMenu
+function handleItemChange(itemSub) {
+  const url = itemSub.url
+  router.push(url)
+}
 
 </script>
 

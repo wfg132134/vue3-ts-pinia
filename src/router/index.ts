@@ -11,7 +11,24 @@ const router = createRouter({
     {
       path: '/main',
       name: 'main',
-      component: () => import('../views/main/main.vue')
+      component: () => import('../views/main/main.vue'),
+      children: [
+        {
+          path: '/main/analysis/one',
+          name: 'analysis',
+          component: () => import('../views/page/AnalysisOne.vue')
+        },
+        {
+          path: '/main/settings/one',
+          name: 'settings',
+          component: () => import('../views/page/SettingsOne.vue')
+        },
+        {
+          path: '/main/department/one',
+          name: 'department',
+          component: () => import('../views/page/DepartmentOne.vue')
+        }
+      ]
     },
     {
       path: '/login',

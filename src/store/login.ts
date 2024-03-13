@@ -10,7 +10,59 @@ const useLoginStore = defineStore('login', {
     username: '',
     password: '',
     token: localStorage.getItem(LOGIN_TOKEN) ?? '',
-    userMenu: JSON.parse(localStorage.getItem('userMenu')) ?? []
+    userMenu: [
+      {
+          "sort": 1,
+          "type": 1,
+          "url": "/main/analysis",
+          "name": "菜单管理",
+          "children": [
+              {
+                  "name": "功能1",
+                  "sort": 106,
+                  "parentId": 38,
+                  "type": 2,
+                  "url": "/main/analysis/one",
+                  "id": "111"
+              }
+          ],
+          "id": "001"
+      },
+      {
+          "sort": 2,
+          "type": 1,
+          "url": "/main/settings",
+          "name": "系统设置",
+          "children": [
+              {
+                  "name": "个人设置",
+                  "sort": 106,
+                  "parentId": 38,
+                  "type": 2,
+                  "url": "/main/settings/one",
+                  "id": "112"
+              }
+          ],
+          "id": "002"
+      },
+      {
+          "sort": 3,
+          "type": 1,
+          "url": "/main/department",
+          "id": "003",
+          "name": "部门管理",
+          "children": [
+              {
+                  "name": "我的部门",
+                  "sort": 106,
+                  "parentId": 38,
+                  "type": 2,
+                  "url": "/main/department/one",
+                  "id": "113"
+              }
+          ]
+      }
+    ]
   }),
   actions: {
     async loginAccountAction(account: IAccount) {
@@ -25,11 +77,11 @@ const useLoginStore = defineStore('login', {
       localStorage.setItem(LOGIN_TOKEN, this.token)
 
       // 3.获取用户的详细信息（role）
-      const userMenuRes = await getUserInfoById(1)
+      // const userMenuRes = await getUserInfoById(1)
 
       // 4.数据缓存
-      localStorage.setItem('userMenu', JSON.stringify(userMenuRes.data))
-      this.userMenu = JSON.stringify(userMenuRes.data)
+      // this.userMenu = userMenuRes
+      
 
       // 页面跳转
       router.push('/main')
